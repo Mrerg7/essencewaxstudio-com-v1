@@ -12,7 +12,7 @@ const STREAM_SRC =
 
   <main class="flex-1">
     <section class="relative overflow-hidden bg-rose-950">
-      <div class="relative w-full min-h-[72svh] sm:min-h-[28rem] md:min-h-0 md:aspect-[1.843]">
+      <div class="relative w-full aspect-[1.843]">
         <iframe
           src={STREAM_SRC}
           title="Essence Wax Studio hero video"
@@ -23,11 +23,11 @@ const STREAM_SRC =
           allowfullscreen="true"
         ></iframe>
         <div
-          class="pointer-events-none absolute inset-0 bg-gradient-to-t from-rose-950/95 via-rose-950/35 to-transparent sm:from-rose-950 sm:via-rose-950/50 sm:to-rose-950/20"
+          class="pointer-events-none absolute inset-0 hidden bg-gradient-to-t from-rose-950 via-rose-950/50 to-rose-950/20 sm:block"
           aria-hidden="true"
         ></div>
-        <div class="absolute inset-0 flex items-end">
-          <div class="container-narrow w-full pb-8 pt-28 sm:pb-12 sm:pt-20">
+        <div class="absolute inset-0 hidden items-end sm:flex">
+          <div class="container-narrow w-full pb-10 pt-20 sm:pb-12">
             <p class="mb-3 text-[10px] font-medium uppercase tracking-widestx text-gold-300 sm:text-xs">
               Brazilian Wax · Hard Wax · Private Studio
             </p>
@@ -42,6 +42,21 @@ const STREAM_SRC =
               <a href="#acquisition" class="btn-secondary pointer-events-auto">Domain Available</a>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="bg-rose-950 px-4 pb-10 pt-8 sm:hidden">
+        <p class="mb-3 text-[10px] font-medium uppercase tracking-widestx text-gold-300">
+          Brazilian Wax · Hard Wax · Private Studio
+        </p>
+        <h1 class="font-display text-4xl font-semibold leading-[0.95] text-white">
+          Essence <span class="italic text-gold-300">Wax Studio</span>
+        </h1>
+        <p class="mt-4 max-w-lg text-sm leading-relaxed text-ivory-100/90">
+          A quiet, appointment-led studio concept for Brazilian waxing — precise work, lasting smoothness.
+        </p>
+        <div class="mt-6 flex flex-col gap-2">
+          <a href="#method" class="btn-primary">The Method</a>
+          <a href="#acquisition" class="btn-secondary">Domain Available</a>
         </div>
       </div>
     </section>
