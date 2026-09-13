@@ -1,0 +1,140 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const STREAM_SRC =
+  'https://customer-wa9cpywo3l4jte5c.cloudflarestream.com/b687f8087e0bcbe2695074f2d88dec95/iframe?muted=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-wa9cpywo3l4jte5c.cloudflarestream.com%2Fb687f8087e0bcbe2695074f2d88dec95%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&controls=false';
+---
+
+<Layout>
+  <Header />
+
+  <main class="flex-1">
+    <section class="relative bg-rose-950">
+      <div class="relative w-full" style="padding-top: 54.32098765432099%;">
+        <iframe
+          src={STREAM_SRC}
+          title="Essence Wax Studio hero video"
+          loading="lazy"
+          style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
+          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+          allowfullscreen="true"
+        ></iframe>
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-rose-950 via-rose-950/50 to-rose-950/20"></div>
+        <div class="absolute inset-0 flex items-end">
+          <div class="container-narrow w-full pb-6 pt-16 sm:pb-12 sm:pt-20">
+            <p class="mb-3 text-[10px] font-medium uppercase tracking-widestx text-gold-300 sm:text-xs">
+              Brazilian Wax · Hard Wax · Private Studio
+            </p>
+            <h1 class="font-display text-4xl font-semibold leading-[0.95] text-white sm:text-6xl lg:text-7xl">
+              Essence <span class="italic text-gold-300">Wax Studio</span>
+            </h1>
+            <p class="mt-4 max-w-lg text-sm leading-relaxed text-ivory-100/90 sm:mt-5 sm:text-lg">
+              A quiet, appointment-led studio concept for Brazilian waxing — precise work, lasting smoothness.
+            </p>
+            <div class="mt-6 flex flex-col gap-2 sm:mt-8 sm:flex-row sm:gap-3">
+              <a href="#method" class="btn-primary pointer-events-auto">The Method</a>
+              <a href="#acquisition" class="btn-secondary pointer-events-auto">Domain Available</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="method" class="section-padding bg-ivory-50">
+      <div class="container-narrow">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-[11px] font-medium uppercase tracking-widestx text-rose-600">The Method</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold text-rose-950 sm:text-5xl">Smoothness that lasts</h2>
+          <p class="mt-4 text-base leading-relaxed text-rose-800 sm:text-lg">
+            Wax epilation extracts hair from the root using warm or hard wax, providing smooth skin for 3 to 4 weeks.
+            The sensation is short and sharp rather than the continuous pinch of mechanical epilation.
+          </p>
+        </div>
+
+        <div class="mt-12 grid gap-4 sm:gap-6 md:grid-cols-2">
+          <article class="card">
+            <h3 class="font-display text-2xl font-semibold text-rose-950">Effectiveness</h3>
+            <p class="mt-3 text-sm leading-relaxed text-rose-700">Removes coarse and fine hair. With consistent sessions, regrowth often becomes finer over time.</p>
+          </article>
+          <article class="card">
+            <h3 class="font-display text-2xl font-semibold text-rose-950">Best for</h3>
+            <p class="mt-3 text-sm leading-relaxed text-rose-700">Ideal for the bikini line and underarms — especially with hard wax, which adheres to hair, not skin.</p>
+          </article>
+          <article class="card">
+            <h3 class="font-display text-2xl font-semibold text-rose-950">Preparation</h3>
+            <p class="mt-3 text-sm leading-relaxed text-rose-700">Hair should be at least ¼ to ½ inch long. Time between visits is part of the method.</p>
+          </article>
+          <article class="card">
+            <h3 class="font-display text-2xl font-semibold text-rose-950">Skin impact</h3>
+            <p class="mt-3 text-sm leading-relaxed text-rose-700">Gentle exfoliation as dead skin lifts with the wax. Temporary redness can occur and typically settles quickly.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="studio" class="section-padding bg-white">
+      <div class="container-narrow grid gap-10 lg:grid-cols-2 lg:items-center">
+        <div>
+          <p class="text-[11px] font-medium uppercase tracking-widestx text-rose-600">The Studio</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold text-rose-950 sm:text-5xl">Private by design</h2>
+          <p class="mt-4 text-base leading-relaxed text-rose-800 sm:text-lg">
+            Essence is a studio name, not a high-volume salon floor. It suggests unhurried appointments, hard-wax technique, and a room that stays quiet.
+          </p>
+          <ul class="mt-8 space-y-4 text-sm text-rose-800 sm:text-base">
+            <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500"></span><span>Hard wax preferred for Brazilian and underarm work.</span></li>
+            <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500"></span><span>Results that last 3 to 4 weeks.</span></li>
+            <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500"></span><span>An appointment-led format with a refined brand presence.</span></li>
+          </ul>
+        </div>
+        <div class="rounded-3xl border border-rose-100 bg-ivory-50 p-6 sm:p-8">
+          <dl class="space-y-5">
+            <div class="flex items-baseline justify-between gap-4 border-b border-rose-100 pb-4">
+              <dt class="text-sm text-rose-600">Format</dt>
+              <dd class="font-display text-2xl font-semibold text-rose-900">Private studio</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 border-b border-rose-100 pb-4">
+              <dt class="text-sm text-rose-600">Signature service</dt>
+              <dd class="font-display text-2xl font-semibold text-rose-900">Brazilian</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4 border-b border-rose-100 pb-4">
+              <dt class="text-sm text-rose-600">Duration</dt>
+              <dd class="font-display text-2xl font-semibold text-rose-900">3–4 weeks</dd>
+            </div>
+            <div class="flex items-baseline justify-between gap-4">
+              <dt class="text-sm text-rose-600">Preferred wax</dt>
+              <dd class="font-display text-2xl font-semibold text-rose-900">Hard wax</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="brand" class="section-padding bg-ivory-50">
+      <div class="container-narrow max-w-3xl text-center">
+        <p class="text-[11px] font-medium uppercase tracking-widestx text-rose-600">The Domain</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-rose-950 sm:text-5xl">Why this name</h2>
+        <div class="mt-6 space-y-4 text-sm leading-relaxed text-rose-800 sm:text-base">
+          <p>
+            <strong class="text-rose-950">EssenceWaxStudio.com</strong> reads as a complete brand: mood, category, and setting.
+            It works on a window, a booking page, and a search result.
+          </p>
+          <p>
+            Available for a boutique wax studio or a beauty operator who wants a refined, studio-first identity.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-rose-100 bg-white py-10 sm:py-12">
+      <div class="container-narrow text-center">
+        <p class="mx-auto max-w-2xl text-xs leading-relaxed text-rose-600 sm:text-sm">
+          Information presented is for demonstration and educational purposes only and does not constitute an offer of salon services.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
