@@ -15,8 +15,10 @@ const {
   title = 'Essence Wax Studio | Refined Brazilian Wax',
   description = 'An elegant wax studio concept for Brazilian and sensitive-area hard wax. Smooth results for 3 to 4 weeks. Domain available.',
   ogImage = POSTER,
-  canonical = 'https://essencewaxstudio.com/',
 } = Astro.props;
+
+const canonical =
+  Astro.props.canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
 
 const siteName = 'Essence Wax Studio';
 ---
@@ -31,6 +33,7 @@ const siteName = 'Essence Wax Studio';
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" href={canonical} hreflang="x-default" />
     <meta name="google-site-verification" content="J3dZuEKL7nnd-79cFj1ti6WePjUwCEENyjDNpjBZxUk" />
 
     <meta property="og:type" content="website" />
