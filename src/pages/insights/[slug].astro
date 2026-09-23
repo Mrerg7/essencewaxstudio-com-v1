@@ -1,0 +1,89 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE } from '../../config/site';
+
+interface Props {
+  post: CollectionEntry<'insights'>;
+}
+
+export async function getStaticPaths() {
+  const insights = await getCollection('insights', (entry: CollectionEntry<'insights'>) => !entry.data.draft);
+  return insights.map((post: CollectionEntry<'insights'>) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const pub = post.data.pubDate.toISOString().split('T')[0];
+const tags: string[] = post.data.tags;
+const keywords = [...tags, 'Essence Wax Studio', SITE.domain, 'wax studio domain'].join(', ');
+---
+
+<Layout
+  title={`${post.data.title} | ${SITE.domain} Insights`}
+  description={post.data.description}
+  canonical={`/insights/${post.slug}/`}
+  ogType="article"
+  keywords={keywords}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Insights', path: '/insights/' },
+    { name: post.data.title, path: `/insights/${post.slug}/` },
+  ]}
+  article={{
+    publishedTime: pub,
+    modifiedTime: pub,
+    tags,
+  }}
+>
+  <Header />
+
+  <main id="main-content" class="flex-1">
+    <article class="bg-white">
+      <header class="border-b border-white/10 bg-rose-950">
+        <div class="container-narrow max-w-3xl py-16 sm:py-20">
+          <p class="text-[11px] font-medium uppercase tracking-widestx text-gold-400">{pub}</p>
+          <h1 class="mt-3 font-display text-4xl font-semibold leading-tight text-white sm:text-5xl">
+            {post.data.title}
+          </h1>
+          <div class="mt-5 flex flex-wrap gap-2">
+            {
+              tags.map((tag) => (
+                <span class="rounded-full border border-white/15 px-3 py-1 text-xs text-rose-100/75">{tag}</span>
+              ))
+            }
+          </div>
+        </div>
+      </header>
+
+      <div class="section-padding">
+        <div class="container-narrow max-w-3xl">
+          <div class="prose prose-lg prose-rose max-w-none">
+            <Content />
+          </div>
+
+          <div class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            <a href="/insights/" class="font-medium text-rose-900 underline decoration-gold-400 underline-offset-4">← All insights</a>
+            <a href="/#faq" class="font-medium text-rose-900 underline decoration-gold-400 underline-offset-4">Buyer FAQ</a>
+          </div>
+
+          <aside class="mt-12 rounded-3xl border border-rose-100 bg-ivory-50 p-6 sm:p-8">
+            <p class="text-[11px] font-medium uppercase tracking-widestx text-gold-500">The domain behind the insight</p>
+            <p class="mt-3 font-display text-2xl font-semibold text-rose-950">{SITE.domain}</p>
+            <p class="mt-2 text-sm leading-relaxed text-rose-700">
+              Mood, category, and setting in one hostname. Offered at {SITE.priceDisplay} — escrow-protected via
+              Escrow.com.
+            </p>
+            <a href="/#acquisition" class="btn-primary mt-4">Request terms</a>
+          </aside>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</Layout>

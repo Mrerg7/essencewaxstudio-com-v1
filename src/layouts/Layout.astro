@@ -1,26 +1,184 @@
 ---
 import '../styles/global.css';
+import { SITE } from '../config/site';
+
+interface Breadcrumb {
+  name: string;
+  path: string;
+}
+
+interface ArticleMeta {
+  publishedTime?: string;
+  modifiedTime?: string;
+  tags?: string[];
+}
 
 interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
-  canonical?: string;
+  canonical?: string | false;
+  robots?: string;
+  ogType?: 'website' | 'article';
+  keywords?: string;
+  breadcrumbs?: Breadcrumb[];
+  article?: ArticleMeta;
+  schemas?: Record<string, unknown>[];
 }
 
-const POSTER =
-  'https://customer-wa9cpywo3l4jte5c.cloudflarestream.com/b687f8087e0bcbe2695074f2d88dec95/thumbnails/thumbnail.jpg?time=&height=600';
-
 const {
-  title = 'Essence Wax Studio | Refined Brazilian Wax',
-  description = 'An elegant wax studio concept for Brazilian and sensitive-area hard wax. Smooth results for 3 to 4 weeks. Domain available.',
-  ogImage = POSTER,
+  title = `${SITE.name} — ${SITE.domain} for Sale, ${SITE.priceDisplay}`,
+  description = `${SITE.domain} is for sale — a refined, exact-match domain for boutique Brazilian wax and hard-wax studios. Asking ${SITE.priceDisplay} via Escrow.com.`,
+  ogImage = SITE.ogImage,
+  ogType = 'website',
+  robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+  keywords = 'Essence Wax Studio, EssenceWaxStudio.com, wax studio domain for sale, Brazilian wax studio name, hard wax studio brand, premium beauty domain, domain for sale $50,000',
+  breadcrumbs = [],
+  article,
+  schemas = [],
 } = Astro.props;
 
-const canonical =
-  Astro.props.canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+const pathname = Astro.url.pathname;
+const normalizedPath =
+  pathname === '/' || pathname === '/index.html'
+    ? '/'
+    : pathname.endsWith('/')
+      ? pathname
+      : `${pathname}/`;
+const canonicalUrl =
+  Astro.props.canonical === false
+    ? null
+    : Astro.props.canonical
+      ? Astro.props.canonical.startsWith('http')
+        ? Astro.props.canonical
+        : `${SITE.url}${Astro.props.canonical}`
+      : `${SITE.url}${normalizedPath}`;
 
-const siteName = 'Essence Wax Studio';
+const today = new Date().toISOString().split('T')[0];
+const streamPoster = `https://${SITE.streamHost}/${SITE.streamId}/thumbnails/thumbnail.jpg?time=&height=600`;
+
+const breadcrumbSchema =
+  breadcrumbs.length && canonicalUrl
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: breadcrumbs.map((crumb, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: crumb.name,
+          item: crumb.path.startsWith('http') ? crumb.path : `${SITE.url}${crumb.path}`,
+        })),
+      }
+    : null;
+
+const articleSchema =
+  ogType === 'article' && canonicalUrl
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: title,
+        description,
+        image: ogImage,
+        datePublished: article?.publishedTime,
+        dateModified: article?.modifiedTime ?? article?.publishedTime,
+        author: { '@type': 'Organization', name: SITE.seller, url: SITE.url },
+        publisher: { '@type': 'Organization', name: SITE.seller, url: SITE.url },
+        mainEntityOfPage: canonicalUrl,
+        keywords: keywords.split(',').map((k) => k.trim()),
+        inLanguage: 'en-US',
+      }
+    : null;
+
+const baseSchemas: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: SITE.seller,
+    url: SITE.url,
+    logo: `${SITE.url}/favicon.svg`,
+    email: SITE.email,
+    description: `Owner and seller of the ${SITE.domain} premium domain name.`,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      email: SITE.email,
+      contactType: 'sales',
+      availableLanguage: 'English',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.url,
+    description,
+    inLanguage: 'en-US',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description,
+    url: canonicalUrl ?? SITE.url,
+    primaryImageOfPage: { '@type': 'ImageObject', url: ogImage, caption: SITE.ogImageAlt },
+    datePublished: '2026-09-13',
+    dateModified: today,
+    inLanguage: 'en-US',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: `${SITE.domain} Premium Domain Name`,
+    description: `Exact-match .com domain for a boutique wax studio — Brazilian wax, hard wax, and appointment-led brands. Available for acquisition at ${SITE.priceDisplay}.`,
+    url: SITE.url,
+    category: 'Premium Domain Name',
+    image: [ogImage],
+    brand: { '@type': 'Brand', name: SITE.domain },
+    offers: {
+      '@type': 'Offer',
+      url: `${SITE.url}/#acquisition`,
+      price: SITE.price,
+      priceCurrency: SITE.priceCurrency,
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      priceValidUntil: SITE.priceValidUntil,
+      validFrom: '2026-09-13',
+      eligibleTransactionType: 'https://schema.org/FullPurchaseTransaction',
+      seller: { '@type': 'Organization', name: SITE.seller, url: SITE.url, email: SITE.email },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'US',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+      },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: { '@type': 'MonetaryAmount', value: 0, currency: SITE.priceCurrency },
+        shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 2,
+            unitCode: 'DAY',
+          },
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 3,
+            unitCode: 'DAY',
+          },
+        },
+      },
+    },
+  },
+];
+
+const allSchemas = [
+  ...baseSchemas,
+  ...(breadcrumbSchema ? [breadcrumbSchema] : []),
+  ...(articleSchema ? [articleSchema] : []),
+  ...schemas,
+];
 ---
 
 <!doctype html>
@@ -31,68 +189,67 @@ const siteName = 'Essence Wax Studio';
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
-    <link rel="canonical" href={canonical} />
-    <link rel="alternate" href={canonical} hreflang="x-default" />
-    <meta name="google-site-verification" content="J3dZuEKL7nnd-79cFj1ti6WePjUwCEENyjDNpjBZxUk" />
+    <meta name="keywords" content={keywords} />
+    <meta name="robots" content={robots} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <meta name="google-site-verification" content={SITE.googleSiteVerification} />
+    <meta name="author" content={SITE.seller} />
+    {canonicalUrl && <link rel="alternate" hreflang="en" href={canonicalUrl} />}
+    {canonicalUrl && <link rel="alternate" hreflang="x-default" href={canonicalUrl} />}
 
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={ogType} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:site_name" content={siteName} />
+    <meta property="og:image:alt" content={SITE.ogImageAlt} />
+    <meta property="og:site_name" content={SITE.name} />
     <meta property="og:locale" content="en_US" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={SITE.ogImageAlt} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
     <meta name="theme-color" content="#2e1c19" />
 
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": siteName,
-      "url": "https://essencewaxstudio.com",
-      "description": description
-    })} />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": title,
-      "description": description,
-      "url": canonical,
-      "primaryImageOfPage": { "@type": "ImageObject", "url": ogImage },
-      "datePublished": "2026-09-13",
-      "dateModified": "2026-09-13"
-    })} />
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How long does waxing last?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Wax epilation extracts hair from the root and typically provides smooth skin for 3 to 4 weeks. With consistent sessions, regrowth often becomes finer."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Why hard wax?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Hard wax is ideal for the bikini line and underarms because it adheres to hair rather than skin, reducing pull and irritation."
-          }
-        }
-      ]
-    })} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600&display=swap"
+    />
+    <link rel="dns-prefetch" href={`https://${SITE.streamHost}`} />
+    <link rel="preload" as="image" href={streamPoster} />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+
+    {allSchemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
   </head>
   <body class="min-h-screen flex flex-col">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-3 focus:rounded-xl focus:bg-rose-900 focus:text-white focus:font-semibold"
+    >
+      Skip to content
+    </a>
     <slot />
+    <a
+      href="/#acquisition"
+      class="fixed inset-x-0 bottom-0 z-50 flex items-center justify-between gap-4 border-t border-white/10 bg-rose-950/95 px-4 py-3 backdrop-blur-md sm:hidden"
+      aria-label="Inquire about EssenceWaxStudio.com"
+    >
+      <span class="leading-tight">
+        <span class="block text-[10px] uppercase tracking-widestx text-rose-400">Domain for sale</span>
+        <span class="block font-display text-lg font-semibold text-gold-300">{SITE.priceDisplay}</span>
+      </span>
+      <span class="inline-flex min-h-10 items-center rounded-full bg-gold-400 px-5 text-sm font-medium text-rose-950">
+        Make an offer
+      </span>
+    </a>
   </body>
 </html>

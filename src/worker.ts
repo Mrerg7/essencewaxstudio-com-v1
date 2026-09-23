@@ -1,5 +1,5 @@
 /**
- * Edge Worker: permanent URL canonicalization.
+ * Edge Worker: canonical URL normalization + security headers.
  *
  * Resolves Search Console indexing reasons:
  *  - "Duplicate without user-selected canonical" — every HTML response carries a
@@ -8,6 +8,10 @@
  *    /index.html variants permanently 301 to the apex canonical URL.
  *  - "Blocked by robots.txt" — robots.txt is served through unchanged (Allow: /);
  *    non-canonical hosts are never served, and 404s are noindexed.
+ *
+ * HTML responses also get a trailing-slash-normalized canonical Link header so it
+ * always matches the in-page canonical (assets are force-trailing-slash), plus
+ * baseline security headers.
  */
 const CANONICAL_HOST = 'essencewaxstudio.com';
 const CANONICAL_ORIGIN = `https://${CANONICAL_HOST}`;
@@ -27,6 +31,18 @@ function canonicalLocation(requestUrl: URL, pathname: string): string {
   next.hash = '';
   return next.toString();
 }
+
+function normalizeHtmlPath(pathname: string): string {
+  if (pathname === '' || pathname === '/' || /^\/index(\.html)?$/i.test(pathname)) return '/';
+  return pathname.endsWith('/') ? pathname : `${pathname}/`;
+}
+
+const SECURITY_HEADERS: Record<string, string> = {
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+  'X-Frame-Options': 'SAMEORIGIN',
+};
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -72,6 +88,9 @@ export default {
     }
 
     const headers = new Headers(assetResponse.headers);
+    for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
+      headers.set(key, value);
+    }
 
     if (assetResponse.status === 404) {
       headers.set('X-Robots-Tag', 'noindex, nofollow');
@@ -83,8 +102,11 @@ export default {
     }
 
     if (assetResponse.status === 200) {
-      const canonicalPath = url.pathname === '' ? '/' : url.pathname;
-      headers.set('Link', `<${CANONICAL_ORIGIN}${canonicalPath}>; rel="canonical"`);
+      headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
+      headers.set(
+        'Link',
+        `<${CANONICAL_ORIGIN}${normalizeHtmlPath(url.pathname)}>; rel="canonical"`,
+      );
     }
 
     return new Response(assetResponse.body, {

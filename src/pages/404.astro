@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../config/site';
+---
+
+<Layout
+  title={`Page not found | ${SITE.name}`}
+  description={`The page you are looking for does not exist. Return to the ${SITE.name} homepage — ${SITE.domain} is for sale at ${SITE.priceDisplay}.`}
+  canonical={false}
+  robots="noindex, follow"
+>
+  <Header />
+  <main id="main-content" class="flex-1">
+    <section class="container-narrow flex flex-col items-center justify-center py-24 text-center sm:py-32">
+      <p class="text-[11px] font-medium uppercase tracking-widestx text-gold-500">Error 404</p>
+      <h1 class="mt-4 font-display text-4xl font-semibold text-rose-950 sm:text-5xl">Page not found</h1>
+      <p class="mt-4 max-w-md text-sm leading-relaxed text-rose-700 sm:text-base">
+        The page you are looking for does not exist or has been moved. Browse the waxing
+        <a href="/insights/" class="font-medium text-rose-950 underline decoration-gold-500 underline-offset-4">insights</a>,
+        or return to the homepage.
+      </p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href="/" class="btn-primary sm:w-auto">Back to homepage</a>
+        <a href="/#acquisition" class="btn-gold sm:w-auto">Inquire — {SITE.priceDisplay}</a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

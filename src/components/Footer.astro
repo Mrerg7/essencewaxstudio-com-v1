@@ -1,47 +1,47 @@
 ---
+import { SITE } from '../config/site';
+
 const currentYear = new Date().getFullYear();
 ---
 
-<footer id="acquisition" class="bg-rose-950 text-ivory-50">
-  <div class="border-b border-white/10">
-    <div class="container-narrow py-14 sm:py-16">
-      <div class="mx-auto max-w-2xl text-center">
-        <p class="mb-4 text-[11px] font-medium uppercase tracking-widestx text-gold-400">Domain Available</p>
-        <h2 class="font-display text-3xl font-semibold text-white sm:text-5xl">
-          Acquire <span class="italic text-gold-300">EssenceWaxStudio.com</span>
-        </h2>
-        <p class="mt-4 text-sm leading-relaxed text-rose-200 sm:text-base">
-          A polished studio name for Brazilian wax, hard-wax services, and an appointment-led brand.
-        </p>
-        <p class="mt-6 font-display text-4xl font-semibold tracking-tight text-gold-300 sm:text-5xl">
-          $50,000
-        </p>
-        <p class="mt-2 text-xs uppercase tracking-widestx text-rose-400">Asking price</p>
-        <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href="mailto:sales@desertrich.com?subject=Domain%20Inquiry%3A%20EssenceWaxStudio.com" class="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-gold-400 px-7 py-3 text-sm font-medium text-rose-950 hover:bg-gold-300 sm:w-auto">
-            sales@desertrich.com
-          </a>
-          <span class="text-sm text-rose-300">Serious inquiries only</span>
-        </div>
-        <p class="mt-5 text-xs text-rose-400">Confidential. Response within 1–2 business days.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="container-narrow py-8">
-    <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+<footer class="border-t border-white/10 bg-rose-950 text-ivory-50">
+  <div class="container-narrow py-12 sm:py-14">
+    <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
       <div>
-        <p class="font-display text-lg text-white">Essence Wax Studio</p>
-        <p class="text-xs uppercase tracking-widestx text-rose-400">Informational platform</p>
+        <p class="font-display text-xl text-white">
+          {SITE.domain} <span class="italic text-gold-300">for sale</span>
+        </p>
+        <p class="mt-1 font-display text-2xl font-semibold text-gold-300">{SITE.priceDisplay}</p>
+        <p class="mt-1 text-xs uppercase tracking-widestx text-rose-400">Informational platform</p>
+        <a
+          href={`mailto:${SITE.email}?subject=${encodeURIComponent(`Domain Inquiry: ${SITE.domain}`)}`}
+          class="mt-4 inline-flex min-h-10 items-center rounded-full bg-gold-400 px-5 text-sm font-medium text-rose-950 transition hover:bg-gold-300"
+        >
+          Make an offer
+        </a>
       </div>
-      <p class="max-w-md text-xs leading-relaxed text-rose-400 sm:text-right">
-        This website is for demonstration and informational purposes only. It does not constitute an offer of services,
-        a commitment to deploy, or a guarantee of outcomes. All statistics, projections, and references to specific
-        technologies are based on publicly available information as of the date shown and are subject to change.
-      </p>
+
+      <nav class="grid grid-cols-2 gap-x-10 gap-y-2 text-sm sm:grid-cols-3" aria-label="Footer navigation">
+        <a href="/#method" class="text-rose-200/80 hover:text-gold-300">The Method</a>
+        <a href="/#studio" class="text-rose-200/80 hover:text-gold-300">The Studio</a>
+        <a href="/#brand" class="text-rose-200/80 hover:text-gold-300">The Domain</a>
+        <a href="/insights/" class="text-rose-200/80 hover:text-gold-300">Waxing Insights</a>
+        <a href="/#faq" class="text-rose-200/80 hover:text-gold-300">Buyer FAQ</a>
+        <a href="/#acquisition" class="text-rose-200/80 hover:text-gold-300">Domain Inquiry</a>
+        <a href={SITE.escrow} rel="noopener nofollow" target="_blank" class="text-rose-200/80 hover:text-gold-300">Escrow.com</a>
+        <a href={`mailto:${SITE.email}`} class="text-rose-200/80 hover:text-gold-300">{SITE.email}</a>
+      </nav>
     </div>
+
+    <p class="mt-8 max-w-3xl text-xs leading-relaxed text-rose-400">
+      This website is for demonstration and informational purposes only. It does not constitute an offer of salon
+      services, a commitment to deploy, or a guarantee of outcomes. All statistics, projections, and references to
+      specific technologies are based on publicly available information as of the date shown and are subject to change.
+      {SITE.domain} is offered for sale by its owner; domain sales are completed through Escrow.com.
+    </p>
+
     <div class="mt-8 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-rose-500 sm:flex-row sm:justify-between">
-      <p>© {currentYear} Essence Wax Studio. All rights reserved.</p>
+      <p>© {currentYear} {SITE.name}. All rights reserved.</p>
       <p>Astro · Cloudflare Workers Static Assets · Stream</p>
     </div>
   </div>

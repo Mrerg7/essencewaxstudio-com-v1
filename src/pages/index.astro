@@ -1,16 +1,84 @@
 ---
+import { getCollection, type CollectionEntry } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Acquisition from '../components/Acquisition.astro';
+import { SITE } from '../config/site';
 
-const STREAM_SRC =
-  'https://customer-wa9cpywo3l4jte5c.cloudflarestream.com/b687f8087e0bcbe2695074f2d88dec95/iframe?muted=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-wa9cpywo3l4jte5c.cloudflarestream.com%2Fb687f8087e0bcbe2695074f2d88dec95%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&controls=false';
+type Insight = CollectionEntry<'insights'>;
+
+const STREAM_SRC = `https://${SITE.streamHost}/${SITE.streamId}/iframe?muted=true&loop=true&autoplay=true&poster=https%3A%2F%2F${SITE.streamHost}%2F${SITE.streamId}%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&controls=false`;
+
+const faqs = [
+  {
+    q: `Is ${SITE.domain} for sale?`,
+    a: `Yes. ${SITE.domain} is a premium domain name available for acquisition from the owner. Serious buyers can use the inquiry form on this page or email ${SITE.email}. We respond personally within 1–2 business days.`,
+  },
+  {
+    q: 'What is the asking price?',
+    a: `The listed acquisition price is ${SITE.priceDisplay} USD, one-time, with full ownership and a clean title. Submit an offer through the inquiry form if you would like to discuss terms.`,
+  },
+  {
+    q: 'How do I buy this domain?',
+    a: `Send an inquiry through the form on this page or email ${SITE.email} with your offer and timeline. Every transaction is completed through Escrow.com so funds and domain transfer are both protected.`,
+  },
+  {
+    q: 'What is the domain designed for?',
+    a: `${SITE.domain} is the brand home for a boutique wax studio — Brazilian wax, hard wax, underarm and bikini services, and an appointment-led private studio identity.`,
+  },
+  {
+    q: 'Is the domain transfer safe?',
+    a: 'Yes. Acquisitions are escrow-protected via Escrow.com. The domain has a clean title and transfers to your registrar account, typically within 0–5 business days after cleared payment.',
+  },
+  {
+    q: 'How long does waxing last?',
+    a: 'Wax epilation extracts hair from the root and typically provides smooth skin for 3 to 4 weeks. With consistent sessions, regrowth often becomes finer over time.',
+  },
+  {
+    q: 'Why hard wax for Brazilian waxing?',
+    a: 'Hard wax is ideal for the bikini line and underarms because it adheres to hair rather than skin, reducing pull and irritation.',
+  },
+];
+
+const faqSchema: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+
+const posts = (await getCollection('insights', (entry: Insight): entry is Insight => !entry.data.draft))
+  .sort((a: Insight, b: Insight) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const methodCards = [
+  {
+    title: 'Effectiveness',
+    body: 'Removes coarse and fine hair. With consistent sessions, regrowth often becomes finer over time.',
+  },
+  {
+    title: 'Best for',
+    body: 'Ideal for the bikini line and underarms — especially with hard wax, which adheres to hair, not skin.',
+  },
+  {
+    title: 'Preparation',
+    body: 'Hair should be at least ¼ to ½ inch long. Time between visits is part of the method.',
+  },
+  {
+    title: 'Skin impact',
+    body: 'Gentle exfoliation as dead skin lifts with the wax. Temporary redness can occur and typically settles quickly.',
+  },
+];
 ---
 
-<Layout>
+<Layout schemas={[faqSchema]}>
   <Header />
 
-  <main class="flex-1">
+  <main id="main-content" class="flex-1">
     <section class="relative overflow-hidden bg-rose-950">
       <div class="relative w-full aspect-[1.843]">
         <iframe
@@ -26,37 +94,23 @@ const STREAM_SRC =
           class="pointer-events-none absolute inset-0 hidden bg-gradient-to-t from-rose-950 via-rose-950/50 to-rose-950/20 sm:block"
           aria-hidden="true"
         ></div>
-        <div class="absolute inset-0 hidden items-end sm:flex">
-          <div class="container-narrow w-full pb-10 pt-20 sm:pb-12">
-            <p class="mb-3 text-[10px] font-medium uppercase tracking-widestx text-gold-300 sm:text-xs">
-              Brazilian Wax · Hard Wax · Private Studio
-            </p>
-            <h1 class="font-display text-4xl font-semibold leading-[0.95] text-white sm:text-6xl lg:text-7xl">
-              Essence <span class="italic text-gold-300">Wax Studio</span>
-            </h1>
-            <p class="mt-4 max-w-lg text-sm leading-relaxed text-ivory-100/90 sm:mt-5 sm:text-lg">
-              A quiet, appointment-led studio concept for Brazilian waxing — precise work, lasting smoothness.
-            </p>
-            <div class="mt-6 flex flex-col gap-2 sm:mt-8 sm:flex-row sm:gap-3">
-              <a href="#method" class="btn-primary pointer-events-auto">The Method</a>
-              <a href="#acquisition" class="btn-secondary pointer-events-auto">Domain Available</a>
-            </div>
-          </div>
-        </div>
       </div>
-      <div class="bg-rose-950 px-4 pb-10 pt-8 sm:hidden">
-        <p class="mb-3 text-[10px] font-medium uppercase tracking-widestx text-gold-300">
-          Brazilian Wax · Hard Wax · Private Studio
-        </p>
-        <h1 class="font-display text-4xl font-semibold leading-[0.95] text-white">
-          Essence <span class="italic text-gold-300">Wax Studio</span>
-        </h1>
-        <p class="mt-4 max-w-lg text-sm leading-relaxed text-ivory-100/90">
-          A quiet, appointment-led studio concept for Brazilian waxing — precise work, lasting smoothness.
-        </p>
-        <div class="mt-6 flex flex-col gap-2">
-          <a href="#method" class="btn-primary">The Method</a>
-          <a href="#acquisition" class="btn-secondary">Domain Available</a>
+
+      <div class="sm:absolute sm:inset-0 sm:flex sm:items-end">
+        <div class="container-narrow w-full pb-10 pt-8 sm:pb-12 sm:pt-20">
+          <p class="mb-3 text-[10px] font-medium uppercase tracking-widestx text-gold-300 sm:text-xs">
+            Brazilian Wax · Hard Wax · Private Studio
+          </p>
+          <h1 class="font-display text-4xl font-semibold leading-[0.95] text-white sm:text-6xl lg:text-7xl">
+            Essence <span class="italic text-gold-300">Wax Studio</span>
+          </h1>
+          <p class="mt-4 max-w-lg text-sm leading-relaxed text-ivory-100/90 sm:mt-5 sm:text-lg">
+            A quiet, appointment-led studio concept for Brazilian waxing — precise work, lasting smoothness.
+          </p>
+          <div class="mt-6 flex flex-col gap-2 sm:mt-8 sm:flex-row sm:gap-3">
+            <a href="#method" class="btn-primary pointer-events-auto">The Method</a>
+            <a href="#acquisition" class="btn-gold pointer-events-auto">Domain Available — {SITE.priceDisplay}</a>
+          </div>
         </div>
       </div>
     </section>
@@ -73,22 +127,21 @@ const STREAM_SRC =
         </div>
 
         <div class="mt-12 grid gap-4 sm:gap-6 md:grid-cols-2">
-          <article class="card">
-            <h3 class="font-display text-2xl font-semibold text-rose-950">Effectiveness</h3>
-            <p class="mt-3 text-sm leading-relaxed text-rose-700">Removes coarse and fine hair. With consistent sessions, regrowth often becomes finer over time.</p>
-          </article>
-          <article class="card">
-            <h3 class="font-display text-2xl font-semibold text-rose-950">Best for</h3>
-            <p class="mt-3 text-sm leading-relaxed text-rose-700">Ideal for the bikini line and underarms — especially with hard wax, which adheres to hair, not skin.</p>
-          </article>
-          <article class="card">
-            <h3 class="font-display text-2xl font-semibold text-rose-950">Preparation</h3>
-            <p class="mt-3 text-sm leading-relaxed text-rose-700">Hair should be at least ¼ to ½ inch long. Time between visits is part of the method.</p>
-          </article>
-          <article class="card">
-            <h3 class="font-display text-2xl font-semibold text-rose-950">Skin impact</h3>
-            <p class="mt-3 text-sm leading-relaxed text-rose-700">Gentle exfoliation as dead skin lifts with the wax. Temporary redness can occur and typically settles quickly.</p>
-          </article>
+          {
+            methodCards.map((card) => (
+              <article class="card">
+                <h3 class="font-display text-2xl font-semibold text-rose-950">{card.title}</h3>
+                <p class="mt-3 text-sm leading-relaxed text-rose-700">{card.body}</p>
+              </article>
+            ))
+          }
+        </div>
+
+        <div class="mt-10 text-center">
+          <a href="/insights/" class="inline-flex items-center gap-2 text-sm font-medium text-rose-900 underline decoration-gold-400 underline-offset-4 hover:text-rose-700">
+            Read the full waxing guides
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </section>
@@ -99,7 +152,8 @@ const STREAM_SRC =
           <p class="text-[11px] font-medium uppercase tracking-widestx text-rose-600">The Studio</p>
           <h2 class="mt-3 font-display text-3xl font-semibold text-rose-950 sm:text-5xl">Private by design</h2>
           <p class="mt-4 text-base leading-relaxed text-rose-800 sm:text-lg">
-            Essence is a studio name, not a high-volume salon floor. It suggests unhurried appointments, hard-wax technique, and a room that stays quiet.
+            Essence is a studio name, not a high-volume salon floor. It suggests unhurried appointments, hard-wax
+            technique, and a room that stays quiet.
           </p>
           <ul class="mt-8 space-y-4 text-sm text-rose-800 sm:text-base">
             <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500"></span><span>Hard wax preferred for Brazilian and underarm work.</span></li>
@@ -136,20 +190,112 @@ const STREAM_SRC =
         <h2 class="mt-3 font-display text-3xl font-semibold text-rose-950 sm:text-5xl">Why this name</h2>
         <div class="mt-6 space-y-4 text-sm leading-relaxed text-rose-800 sm:text-base">
           <p>
-            <strong class="text-rose-950">EssenceWaxStudio.com</strong> reads as a complete brand: mood, category, and setting.
+            <strong class="text-rose-950">{SITE.domain}</strong> reads as a complete brand: mood, category, and setting.
             It works on a window, a booking page, and a search result.
           </p>
           <p>
-            Available for a boutique wax studio or a beauty operator who wants a refined, studio-first identity.
+            Available for a boutique wax studio or a beauty operator who wants a refined, studio-first identity. Every
+            word a client would search — <em>essence</em>, <em>wax</em>, <em>studio</em> — is already in the hostname,
+            so the brand and the query arrive together.
           </p>
+        </div>
+        <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a href="#acquisition" class="btn-primary">Make an offer</a>
+          <a href="/insights/why-essencewaxstudio-com/" class="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-rose-300 px-7 py-3 text-sm font-medium text-rose-900 hover:bg-rose-50 sm:w-auto">
+            Read the brand story
+          </a>
         </div>
       </div>
     </section>
 
+    <section id="faq" class="section-padding bg-white">
+      <div class="container-narrow">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-[11px] font-medium uppercase tracking-widestx text-rose-600">FAQ</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold text-rose-950 sm:text-5xl">
+            Questions buyers ask
+          </h2>
+          <p class="mt-4 text-base leading-relaxed text-rose-800 sm:text-lg">
+            Everything about the offer, the transfer, and the category the name was built for. Something missing?
+            <a
+              href={`mailto:${SITE.email}?subject=${encodeURIComponent(`Domain Inquiry: ${SITE.domain}`)}`}
+              class="font-medium text-rose-950 underline decoration-gold-500 underline-offset-4"
+            >
+              Ask us directly
+            </a>.
+          </p>
+        </div>
+
+        <div class="mx-auto mt-12 max-w-3xl space-y-4">
+          {
+            faqs.map((item) => (
+              <details class="card group">
+                <summary class="flex cursor-pointer list-none items-start justify-between gap-4 font-display text-xl font-semibold text-rose-950 sm:text-2xl">
+                  <span>{item.q}</span>
+                  <svg
+                    class="mt-1 h-5 w-5 shrink-0 text-gold-500 transition-transform group-open:rotate-45"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                  </svg>
+                </summary>
+                <p class="mt-3 text-sm leading-relaxed text-rose-700 sm:text-base">{item.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="insights" class="section-padding bg-ivory-50">
+      <div class="container-narrow">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-[11px] font-medium uppercase tracking-widestx text-rose-600">Insights</p>
+          <h2 class="mt-3 font-display text-3xl font-semibold text-rose-950 sm:text-5xl">
+            Guides for the category
+          </h2>
+          <p class="mt-4 text-base leading-relaxed text-rose-800 sm:text-lg">
+            Practical writing on waxing method and studio branding — the category {SITE.domain} was built to lead.
+          </p>
+        </div>
+
+        <div class="mt-12 grid gap-6 md:grid-cols-3">
+          {
+            posts.map((post: Insight) => (
+              <a href={`/insights/${post.slug}/`} class="card group flex flex-col transition hover:-translate-y-1">
+                <p class="text-[11px] font-medium uppercase tracking-widestx text-gold-500">
+                  {post.data.pubDate.toISOString().split('T')[0]}
+                </p>
+                <h3 class="mt-3 font-display text-2xl font-semibold text-rose-950 group-hover:text-rose-700">
+                  {post.data.title}
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-rose-700">{post.data.description}</p>
+                <span class="mt-4 text-sm font-medium text-rose-900">Read more →</span>
+              </a>
+            ))
+          }
+        </div>
+
+        <div class="mt-10 text-center">
+          <a href="/insights/" class="inline-flex items-center gap-2 text-sm font-medium text-rose-900 underline decoration-gold-400 underline-offset-4 hover:text-rose-700">
+            All insights
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <Acquisition />
+
     <section class="border-t border-rose-100 bg-white py-10 sm:py-12">
       <div class="container-narrow text-center">
         <p class="mx-auto max-w-2xl text-xs leading-relaxed text-rose-600 sm:text-sm">
-          Information presented is for demonstration and educational purposes only and does not constitute an offer of salon services.
+          Information presented is for demonstration and educational purposes only and does not constitute an offer of
+          salon services. The domain {SITE.domain} is offered for sale by its owner.
         </p>
       </div>
     </section>

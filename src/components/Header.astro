@@ -1,4 +1,5 @@
 ---
+import { SITE } from '../config/site';
 ---
 
 <header class="sticky top-0 z-50 border-b border-rose-100/70 bg-ivory-50/85 backdrop-blur-md">
@@ -14,11 +15,14 @@
         </span>
       </a>
 
-      <nav class="hidden items-center gap-7 md:flex" aria-label="Main navigation">
-        <a href="#method" class="text-sm font-medium text-rose-800 hover:text-rose-600">The Method</a>
-        <a href="#studio" class="text-sm font-medium text-rose-800 hover:text-rose-600">The Studio</a>
-        <a href="#brand" class="text-sm font-medium text-rose-800 hover:text-rose-600">The Domain</a>
-        <a href="#acquisition" class="rounded-full bg-rose-900 px-4 py-2 text-xs font-medium tracking-wide text-white hover:bg-rose-800">Domain Inquiry</a>
+      <nav class="hidden items-center gap-6 md:flex" aria-label="Main navigation">
+        <a href="/#method" class="text-sm font-medium text-rose-800 hover:text-rose-600">The Method</a>
+        <a href="/#studio" class="text-sm font-medium text-rose-800 hover:text-rose-600">The Studio</a>
+        <a href="/#brand" class="text-sm font-medium text-rose-800 hover:text-rose-600">The Domain</a>
+        <a href="/insights/" class="text-sm font-medium text-rose-800 hover:text-rose-600">Insights</a>
+        <a href="/#acquisition" class="rounded-full bg-rose-900 px-4 py-2 text-xs font-medium tracking-wide text-white hover:bg-rose-800">
+          Inquire — {SITE.priceDisplay}
+        </a>
       </nav>
 
       <button type="button" id="mobile-menu-btn" class="inline-flex h-10 w-10 items-center justify-center rounded-full text-rose-800 hover:bg-ivory-100 md:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu">
@@ -31,10 +35,14 @@
 
   <div id="mobile-menu" class="hidden border-t border-rose-100 bg-ivory-50 md:hidden">
     <div class="container-narrow space-y-1 py-3">
-      <a href="#method" class="block rounded-xl px-3 py-3 text-base font-medium text-rose-900">The Method</a>
-      <a href="#studio" class="block rounded-xl px-3 py-3 text-base font-medium text-rose-900">The Studio</a>
-      <a href="#brand" class="block rounded-xl px-3 py-3 text-base font-medium text-rose-900">The Domain</a>
-      <a href="#acquisition" class="mt-2 block rounded-full bg-rose-900 px-4 py-3 text-center text-sm font-medium text-white">Domain Inquiry</a>
+      <a href="/#method" class="block rounded-xl px-3 py-3 text-base font-medium text-rose-900">The Method</a>
+      <a href="/#studio" class="block rounded-xl px-3 py-3 text-base font-medium text-rose-900">The Studio</a>
+      <a href="/#brand" class="block rounded-xl px-3 py-3 text-base font-medium text-rose-900">The Domain</a>
+      <a href="/insights/" class="block rounded-xl px-3 py-3 text-base font-medium text-rose-900">Insights</a>
+      <a href="/#faq" class="block rounded-xl px-3 py-3 text-base font-medium text-rose-900">FAQ</a>
+      <a href="/#acquisition" class="mt-2 block rounded-full bg-rose-900 px-4 py-3 text-center text-sm font-medium text-white">
+        Make an offer — {SITE.priceDisplay}
+      </a>
     </div>
   </div>
 </header>

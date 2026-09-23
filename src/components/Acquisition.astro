@@ -1,0 +1,196 @@
+---
+import { SITE } from '../config/site';
+
+const steps = [
+  {
+    title: 'Send your inquiry',
+    body: 'Share your offer, intended use, and timeline through the form or by email.',
+  },
+  {
+    title: 'Secure escrow',
+    body: 'Funds are held by Escrow.com — neither side moves until both are satisfied.',
+  },
+  {
+    title: 'Transfer in days',
+    body: 'The domain pushes to your registrar account, typically within 0–5 business days of cleared payment.',
+  },
+];
+---
+
+<section id="acquisition" class="bg-rose-950 text-ivory-50">
+  <div class="container-narrow section-padding">
+    <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <p class="text-[11px] font-medium uppercase tracking-widestx text-gold-400">Domain available</p>
+        <h2 class="mt-3 font-display text-3xl font-semibold text-white sm:text-5xl">
+          Acquire <span class="italic text-gold-300">{SITE.domain}</span>
+        </h2>
+        <p class="mt-4 text-sm leading-relaxed text-rose-200 sm:text-base">
+          A polished studio name for Brazilian wax, hard-wax services, and an appointment-led brand.
+        </p>
+
+        <p class="mt-8 font-display text-5xl font-semibold tracking-tight text-gold-300 sm:text-6xl">
+          {SITE.priceDisplay}
+        </p>
+        <p class="mt-2 text-xs uppercase tracking-widestx text-rose-400">Asking price · USD</p>
+
+        <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-rose-100/85">
+          <li class="flex items-center gap-2">
+            <svg class="h-4 w-4 shrink-0 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            Clean title, ready to transfer
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="h-4 w-4 shrink-0 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            Escrow.com protected transaction
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="h-4 w-4 shrink-0 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            Response within 1–2 business days
+          </li>
+        </ul>
+
+        <ol class="mt-10 space-y-6 border-t border-white/10 pt-8">
+          {
+            steps.map((step, i) => (
+              <li class="flex gap-4">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gold-400/40 font-display text-sm font-semibold text-gold-300">
+                  {i + 1}
+                </span>
+                <span>
+                  <span class="block font-display text-xl font-semibold text-white">{step.title}</span>
+                  <span class="mt-1 block text-sm leading-relaxed text-rose-200/85">{step.body}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div class="mt-8 space-y-2 border-t border-white/10 pt-6 text-xs leading-relaxed text-rose-300/75">
+          <p>
+            <span class="font-medium text-rose-100">Delivery:</span> Digital domain transfer to the buyer’s registrar
+            account. No physical shipping. Transfer typically completes within 0–5 business days after cleared payment
+            and signed agreement. Transfer fee: $0.
+          </p>
+          <p>
+            <span class="font-medium text-rose-100">Returns:</span> All domain sales are final. Returns are not
+            permitted once the transfer is initiated or completed.
+          </p>
+        </div>
+      </div>
+
+      <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur sm:p-8">
+        <h3 class="font-display text-2xl font-semibold text-white sm:text-3xl">Make an offer</h3>
+        <p class="mt-2 text-sm leading-relaxed text-rose-200/85">
+          Serious inquiries only. Your email client will open with the details pre-filled and addressed to the seller.
+        </p>
+
+        <form id="inquiry-form" class="mt-6 space-y-5">
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label class="form-label" for="inquiry-name">Full name</label>
+              <input class="form-input" type="text" id="inquiry-name" name="name" required autocomplete="name" placeholder="Your name" />
+            </div>
+            <div>
+              <label class="form-label" for="inquiry-email">Email address</label>
+              <input class="form-input" type="email" id="inquiry-email" name="email" required autocomplete="email" placeholder="you@company.com" />
+            </div>
+          </div>
+
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label class="form-label" for="inquiry-offer">Your offer (optional)</label>
+              <div class="relative">
+                <span class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-sm text-rose-300/70">$</span>
+                <input class="form-input pl-9" type="text" id="inquiry-offer" name="offer" inputmode="numeric" placeholder="50,000" />
+              </div>
+            </div>
+            <div>
+              <label class="form-label" for="inquiry-timeline">Timeline</label>
+              <select class="form-input" id="inquiry-timeline" name="timeline">
+                <option value="Immediate (within 7 days)" class="bg-rose-950">Immediate (within 7 days)</option>
+                <option value="Within 2 weeks" class="bg-rose-950">Within 2 weeks</option>
+                <option value="Within 30 days" class="bg-rose-950">Within 30 days</option>
+                <option value="Flexible / exploring" class="bg-rose-950">Flexible / exploring</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label" for="inquiry-use">Intended use (optional)</label>
+            <input class="form-input" type="text" id="inquiry-use" name="use" placeholder="Boutique wax studio in Austin, TX" />
+          </div>
+
+          <div>
+            <label class="form-label" for="inquiry-message">Message</label>
+            <textarea
+              class="form-input min-h-[120px] resize-y"
+              id="inquiry-message"
+              name="message"
+              rows="4"
+              placeholder={`Tell us about your plans for ${SITE.domain}`}></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="btn-gold w-full"
+          >
+            Send inquiry
+          </button>
+
+          <p class="text-center text-xs leading-relaxed text-rose-300/75">
+            Prefer email?
+            <a
+              href={`mailto:${SITE.email}?subject=${encodeURIComponent(`Domain Inquiry: ${SITE.domain}`)}`}
+              class="font-medium text-gold-300 underline decoration-gold-400/50 underline-offset-4 hover:text-gold-200"
+            >
+              {SITE.email}
+            </a>
+            · Confidential. Protected via Escrow.com.
+          </p>
+          <p id="inquiry-status" class="hidden text-center text-sm text-gold-300" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { ACQUISITION_MAILTO, SITE } from '../config/site';
+
+  const form = document.getElementById('inquiry-form') as HTMLFormElement | null;
+  const status = document.getElementById('inquiry-status');
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const data = new FormData(form);
+    const name = String(data.get('name') ?? '').trim();
+    const email = String(data.get('email') ?? '').trim();
+    const offer = String(data.get('offer') ?? '').trim();
+    const timeline = String(data.get('timeline') ?? '').trim();
+    const use = String(data.get('use') ?? '').trim();
+    const message = String(data.get('message') ?? '').trim();
+
+    const subject = `Domain Inquiry: ${SITE.domain}${offer ? ` — Offer $${offer}` : ''}`;
+    const body = [
+      `Domain: ${SITE.domain} (asking ${SITE.priceDisplay})`,
+      `Name: ${name}`,
+      `Email: ${email}`,
+      offer ? `Offer: $${offer}` : null,
+      timeline ? `Timeline: ${timeline}` : null,
+      use ? `Intended use: ${use}` : null,
+      '',
+      message || '(No additional message)',
+    ]
+      .filter((line) => line !== null)
+      .join('\n');
+
+    window.location.href = ACQUISITION_MAILTO(subject, body);
+
+    if (status) {
+      status.textContent = 'Your email client should open with the inquiry pre-filled.';
+      status.classList.remove('hidden');
+    }
+  });
+</script>

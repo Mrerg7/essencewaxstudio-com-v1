@@ -1,0 +1,74 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE } from '../../config/site';
+
+type Insight = CollectionEntry<'insights'>;
+
+const insights = (
+  await getCollection('insights', (entry: Insight): entry is Insight => !entry.data.draft)
+).sort((a: Insight, b: Insight) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout
+  title={`Waxing Insights & Studio Branding | ${SITE.domain}`}
+  description={`Practical guides on Brazilian waxing, hard wax vs soft wax, studio branding, and how to choose a wax studio name — published by the team behind ${SITE.domain}.`}
+  canonical="/insights/"
+  keywords="waxing insights, hard wax vs soft wax, Brazilian wax prep, wax studio names, essence wax studio, premium domain branding"
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Insights', path: '/insights/' },
+  ]}
+>
+  <Header />
+
+  <main id="main-content" class="flex-1">
+    <section class="border-b border-white/10 bg-rose-950">
+      <div class="container-narrow py-16 sm:py-24">
+        <p class="text-[11px] font-medium uppercase tracking-widestx text-gold-400">Insights · Waxing · Branding</p>
+        <h1 class="mt-3 max-w-3xl font-display text-4xl font-semibold leading-tight text-white sm:text-6xl">
+          Waxing insights, from {SITE.name}
+        </h1>
+        <p class="mt-4 max-w-2xl text-base leading-relaxed text-rose-100/85 sm:text-lg">
+          Practical, no-fluff guides on the category the {SITE.domain} domain was built to lead — method,
+          aftercare, and the branding decisions behind a studio name.
+        </p>
+      </div>
+    </section>
+
+    <section class="section-padding bg-white">
+      <div class="container-narrow">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            insights.map((post: Insight) => (
+              <a href={`/insights/${post.slug}/`} class="card group flex flex-col transition hover:-translate-y-1">
+                <p class="text-[11px] font-medium uppercase tracking-widestx text-gold-500">
+                  {post.data.pubDate.toISOString().split('T')[0]}
+                </p>
+                <h2 class="mt-3 font-display text-2xl font-semibold text-rose-950 group-hover:text-rose-700">
+                  {post.data.title}
+                </h2>
+                <p class="mt-3 text-sm leading-relaxed text-rose-700">{post.data.description}</p>
+                <span class="mt-4 text-sm font-medium text-rose-900">Read more →</span>
+              </a>
+            ))
+          }
+        </div>
+
+        <div class="mt-14 rounded-3xl border border-rose-100 bg-ivory-50 p-6 text-center sm:p-10">
+          <p class="text-[11px] font-medium uppercase tracking-widestx text-gold-500">The domain behind the insights</p>
+          <p class="mt-3 font-display text-3xl font-semibold text-rose-950 sm:text-4xl">{SITE.domain}</p>
+          <p class="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-rose-700">
+            Mood, category, and setting in one hostname — offered at {SITE.priceDisplay}. Built for a boutique wax
+            studio that intends to rank, not just open.
+          </p>
+          <a href="/#acquisition" class="btn-primary mt-6">Make an offer</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
