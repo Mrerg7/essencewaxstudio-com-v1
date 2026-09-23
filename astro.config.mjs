@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://essencewaxstudio.com',
+  trailingSlash: 'always',
   output: 'static',
   integrations: [
     tailwind({ applyBaseStyles: false }),

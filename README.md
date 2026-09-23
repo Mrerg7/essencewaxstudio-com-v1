@@ -13,7 +13,9 @@ Elegant informational site for a Brazilian wax studio brand concept + domain acq
 
 - [x] Title/description with domain + price + buyer intent (`src/config/site.ts` defaults)
 - [x] Self-referencing canonical on every page, trailing-slash normalized (Layout + `src/worker.ts` Link header)
-- [x] `www` / `http` / `/index.html` → apex 301; 404s `noindex` (worker)
+- [x] `www` / `http` / `*.workers.dev` → apex one-hop 301; sitemap URLs all 200 (worker)
+- [x] **GSC "Page with redirect" fix** — same-host `/index.html`, `/index` serve **200** with apex canonical (no redirect); extensionless paths 301 (not Cloudflare 307) to trailing-slash canonical; `/404`, `/404/`, `/404.html` return a real **404 + noindex** (no soft-404); leftover asset 307/302 promoted to absolute 301; `/sitemap.xml` rewritten at 200
+- [x] `trailingSlash: 'always'` in Astro; internal links + sitemap all trailing-slash
 - [x] Sitemap (`/sitemap-index.xml`) referenced from `robots.txt` via `@astrojs/sitemap`
 - [x] Structured data: `Organization`, `WebSite`, `WebPage`, `Product` + `Offer` ($50,000), `FAQPage` (matches visible FAQ), `BreadcrumbList`, `Article` on posts
 - [x] Single H1 per page; FAQ + how-to-buy + inquiry form on homepage
